@@ -1,5 +1,5 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"7676 /Applications/microchip/xc8/v1.45/include/pic16f1829.h
+"7676 /opt/microchip/xc8/v1.45/include/pic16f1829.h
 [v _RB4 `Vb ~T0 @X0 0 e@108 ]
 "7678
 [v _RB5 `Vb ~T0 @X0 0 e@109 ]
@@ -14,21 +14,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 "7690
 [v _RC3 `Vb ~T0 @X0 0 e@115 ]
 [v F2931 `(v ~T0 @X0 1 tf1`ul ]
-"153 /Applications/microchip/xc8/v1.45/include/pic.h
+"153 /opt/microchip/xc8/v1.45/include/pic.h
 [v __delay `JF2931 ~T0 @X0 0 e ]
 [p i __delay ]
+"349 /opt/microchip/xc8/v1.45/include/pic16f1829.h
+[v _INTCON `Vuc ~T0 @X0 0 e@11 ]
 [p mainexit ]
+"1513
+[v _OPTION_REG `Vuc ~T0 @X0 0 e@149 ]
 "68 FinalProject3.c
 [v _pinConfig `(v ~T0 @X0 0 ef ]
-"1764 /Applications/microchip/xc8/v1.45/include/pic16f1829.h
+"1764 /opt/microchip/xc8/v1.45/include/pic16f1829.h
 [v _OSCCON `Vuc ~T0 @X0 0 e@153 ]
 "3031
 [v _ANSELC `Vuc ~T0 @X0 0 e@398 ]
 "69 FinalProject3.c
 [v _echo `(i ~T0 @X0 0 ef2`uc`i ]
-"95 /Applications/microchip/xc8/v1.45/include/stdlib.h
+"95 /opt/microchip/xc8/v1.45/include/stdlib.h
 [v _itoa `(*uc ~T0 @X0 0 ef3`*uc`i`i ]
-"7674 /Applications/microchip/xc8/v1.45/include/pic16f1829.h
+"7674 /opt/microchip/xc8/v1.45/include/pic16f1829.h
 [v _RA5 `Vb ~T0 @X0 0 e@101 ]
 "427
 [v _PORTA `Vuc ~T0 @X0 0 e@12 ]
@@ -64,7 +68,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
 [; ;pic16f1829.h: 50: extern volatile unsigned char INDF0 @ 0x000;
-"52 /Applications/microchip/xc8/v1.45/include/pic16f1829.h
+"52 /opt/microchip/xc8/v1.45/include/pic16f1829.h
 [; ;pic16f1829.h: 52: asm("INDF0 equ 00h");
 [; <" INDF0 equ 00h ;# ">
 [; ;pic16f1829.h: 55: typedef union {
@@ -3464,580 +3468,640 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FinalProject3.c: 78: void Lcd_Shift_Left(void);
 [; ;FinalProject3.c: 79: void setTimeout(int milliseconds);
 [; ;FinalProject3.c: 80: int ping(int a, int b);
-[v $root$_main `(v ~T0 @X0 0 e ]
 "94
-[v _main `(i ~T0 @X0 1 ef2`i`**uc ]
+[v _isr_counter `i ~T0 @X0 1 e ]
+[i _isr_counter
+-> 0 `i
+]
+[; ;FinalProject3.c: 94: int isr_counter = 0;
 "95
+[v _pisr_counter `*i ~T0 @X0 1 e ]
+[i _pisr_counter
+&U _isr_counter
+]
+[; ;FinalProject3.c: 95: int *pisr_counter = &isr_counter;
+"96
+[v _initialize `i ~T0 @X0 1 e ]
+[i _initialize
+-> 0 `i
+]
+[; ;FinalProject3.c: 96: int initialize = 0;
+"97
+[v _pinitialize `*i ~T0 @X0 1 e ]
+[i _pinitialize
+&U _initialize
+]
+[; ;FinalProject3.c: 97: int *pinitialize = &initialize;
+"98
+[v _delay_counter `i ~T0 @X0 1 e ]
+[i _delay_counter
+-> 0 `i
+]
+[; ;FinalProject3.c: 98: int delay_counter = 0;
+"99
+[v _pdelay_counter `*i ~T0 @X0 1 e ]
+[i _pdelay_counter
+&U _delay_counter
+]
+[; ;FinalProject3.c: 99: int *pdelay_counter = &delay_counter;
+[v $root$_ISR `(v ~T0 @X0 0 e ]
+[v F3221 `(v ~T0 @X0 1 tf ]
+"102
+[v _ISR `IF3221 ~T0 @X0 1 e ]
 {
-[; ;FinalProject3.c: 94: int main(int argc, char** argv)
-[; ;FinalProject3.c: 95: {
+[; ;FinalProject3.c: 102: void interrupt ISR() {
+[e :U _ISR ]
+[f ]
+[; ;FinalProject3.c: 103: if (INTCON & (1<<2)) {
+"103
+[e $ ! != & -> _INTCON `i << -> 1 `i -> 2 `i -> 0 `i 398  ]
+{
+[; ;FinalProject3.c: 104: INTCON = INTCON & ~(1<<2);
+"104
+[e = _INTCON -> & -> _INTCON `i ~ << -> 1 `i -> 2 `i `uc ]
+[; ;FinalProject3.c: 105: *pisr_counter+=4;
+"105
+[e =+ *U _pisr_counter -> 4 `i ]
+[; ;FinalProject3.c: 106: if((*pisr_counter % 15625) == 0) ++*pdelay_counter;
+"106
+[e $ ! == % *U _pisr_counter -> 15625 `i -> 0 `i 399  ]
+[e =+ *U _pdelay_counter -> 1 `i ]
+[e :U 399 ]
+"107
+}
+[e :U 398 ]
+[; ;FinalProject3.c: 107: }
+[; ;FinalProject3.c: 108: return;
+"108
+[e $UE 397  ]
+[; ;FinalProject3.c: 109: }
+"109
+[e :UE 397 ]
+}
+[v $root$_main `(v ~T0 @X0 0 e ]
+"111
+[v _main `(i ~T0 @X0 1 ef2`i`**uc ]
+"112
+{
+[; ;FinalProject3.c: 111: int main(int argc, char** argv)
+[; ;FinalProject3.c: 112: {
 [e :U _main ]
-"94
+"111
 [v _argc `i ~T0 @X0 1 r1 ]
 [v _argv `**uc ~T0 @X0 1 r2 ]
-"95
+"112
 [f ]
-[; ;FinalProject3.c: 96: pinConfig();
-"96
-[e ( _pinConfig ..  ]
-[; ;FinalProject3.c: 97: _delay((unsigned long)((30)*(8000000/4000.0)));
-"97
-[e ( __delay (1 -> * -> -> 30 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-[; ;FinalProject3.c: 100: OSCCON = 0X6A;
-"100
-[e = _OSCCON -> -> 106 `i `uc ]
-[; ;FinalProject3.c: 101: ANSELC=0x20;
-"101
-[e = _ANSELC -> -> 32 `i `uc ]
-[; ;FinalProject3.c: 104: RC6 = 0;
-"104
-[e = _RC6 -> -> 0 `i `b ]
-"108
-[v _initialize `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 108: int initialize = 0;
-[e = _initialize -> 0 `i ]
-"109
-[v _pinitialize `*i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 109: int *pinitialize = &initialize;
-[e = _pinitialize &U _initialize ]
-"110
-[v _delay_counter `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 110: int delay_counter = 0;
-[e = _delay_counter -> 0 `i ]
-"111
-[v _pdelay_counter `*i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 111: int *pdelay_counter = &delay_counter;
-[e = _pdelay_counter &U _delay_counter ]
-"113
-[v _toggle `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 113: int toggle = 0;
-[e = _toggle -> 0 `i ]
-[; ;FinalProject3.c: 117: Lcd_Init();
-"117
-[e ( _Lcd_Init ..  ]
-[; ;FinalProject3.c: 118: Lcd_Clear();
-"118
-[e ( _Lcd_Clear ..  ]
-[; ;FinalProject3.c: 119: Lcd_Set_Cursor(1,1);
-"119
-[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 120: Lcd_Write_String("WELCOME TO UTSA");
+[; ;FinalProject3.c: 113: OPTION_REG = OPTION_REG
+[; ;FinalProject3.c: 114: | (0x07)
+[; ;FinalProject3.c: 115: & ~(1<<3)
+[; ;FinalProject3.c: 116: & ~(1<<5);
+"116
+[e = _OPTION_REG -> | -> _OPTION_REG `i & & -> 7 `i ~ << -> 1 `i -> 3 `i ~ << -> 1 `i -> 5 `i `uc ]
+[; ;FinalProject3.c: 117: INTCON = INTCON
+[; ;FinalProject3.c: 118: & ~(1<<2)
+[; ;FinalProject3.c: 119: | (1<<7)
+[; ;FinalProject3.c: 120: | (1<<5);
 "120
-[e ( _Lcd_Write_String (1 -> :s 1C `*uc ]
-[; ;FinalProject3.c: 121: _delay((unsigned long)((1000)*(8000000/4000.0)));
-"121
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-[; ;FinalProject3.c: 125: while(1)
-"125
-[e :U 399 ]
-[; ;FinalProject3.c: 126: {
+[e = _INTCON -> | | & -> _INTCON `i ~ << -> 1 `i -> 2 `i << -> 1 `i -> 7 `i << -> 1 `i -> 5 `i `uc ]
+[; ;FinalProject3.c: 122: pinConfig();
+"122
+[e ( _pinConfig ..  ]
+[; ;FinalProject3.c: 123: _delay((unsigned long)((30)*(8000000/4000.0)));
+"123
+[e ( __delay (1 -> * -> -> 30 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+[; ;FinalProject3.c: 126: OSCCON = 0X6A;
 "126
-{
-[; ;FinalProject3.c: 128: RC6 = 0;
-"128
-[e = _RC6 -> -> 0 `i `b ]
-"129
-[v _ping_val1 `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 129: int ping_val1 = echo('A',1);
-[e = _ping_val1 ( _echo (2 , -> -> 65 `ui `uc -> 1 `i ]
+[e = _OSCCON -> -> 106 `i `uc ]
+[; ;FinalProject3.c: 127: ANSELC=0x20;
+"127
+[e = _ANSELC -> -> 32 `i `uc ]
+[; ;FinalProject3.c: 130: RC6 = 0;
 "130
-[v _ping_val2 `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 130: int ping_val2 = echo('A',2);
-[e = _ping_val2 ( _echo (2 , -> -> 65 `ui `uc -> 2 `i ]
+[e = _RC6 -> -> 0 `i `b ]
 "132
-[v _bufA `uc ~T0 @X0 -> 8 `i a ]
-[; ;FinalProject3.c: 132: char bufA[8];
-[; ;FinalProject3.c: 133: itoa(bufA,ping_val1,10);
-"133
-[e ( _itoa (3 , , &U _bufA _ping_val1 -> 10 `i ]
-"134
-[v _bufB `uc ~T0 @X0 -> 8 `i a ]
-[; ;FinalProject3.c: 134: char bufB[8];
-[; ;FinalProject3.c: 135: itoa(bufB,ping_val2,10);
-"135
-[e ( _itoa (3 , , &U _bufB _ping_val2 -> 10 `i ]
-[; ;FinalProject3.c: 140: if(ping_val1 < 100 && ping_val2 < 100)
+[v _toggle `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 132: int toggle = 0;
+[e = _toggle -> 0 `i ]
+[; ;FinalProject3.c: 136: Lcd_Init();
+"136
+[e ( _Lcd_Init ..  ]
+[; ;FinalProject3.c: 137: Lcd_Clear();
+"137
+[e ( _Lcd_Clear ..  ]
+[; ;FinalProject3.c: 138: Lcd_Set_Cursor(1,1);
+"138
+[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
+[; ;FinalProject3.c: 139: Lcd_Write_String("WELCOME TO UTSA");
+"139
+[e ( _Lcd_Write_String (1 -> :s 1C `*uc ]
+[; ;FinalProject3.c: 140: _delay((unsigned long)((1000)*(8000000/4000.0)));
 "140
-[e $ ! && < _ping_val1 -> 100 `i < _ping_val2 -> 100 `i 401  ]
-[; ;FinalProject3.c: 141: {
-"141
-{
-[; ;FinalProject3.c: 142: *pdelay_counter++;
-"142
-[e *U ++ _pdelay_counter * -> -> 1 `i `x -> -> # *U _pdelay_counter `i `x ]
-[; ;FinalProject3.c: 144: if (*pinitialize == 0)
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+[; ;FinalProject3.c: 144: while(1)
 "144
-[e $ ! == *U _pinitialize -> 0 `i 402  ]
+[e :U 402 ]
 [; ;FinalProject3.c: 145: {
 "145
 {
-[; ;FinalProject3.c: 147: Lcd_Clear();
+[; ;FinalProject3.c: 147: RC6 = 0;
 "147
-[e ( _Lcd_Clear ..  ]
-[; ;FinalProject3.c: 148: Lcd_Set_Cursor(1,1);
+[e = _RC6 -> -> 0 `i `b ]
 "148
-[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 149: Lcd_Write_String("In range: ");
+[v _ping_val1 `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 148: int ping_val1 = echo('A',1);
+[e = _ping_val1 ( _echo (2 , -> -> 65 `ui `uc -> 1 `i ]
 "149
-[e ( _Lcd_Write_String (1 -> :s 2C `*uc ]
-[; ;FinalProject3.c: 150: Lcd_Set_Cursor(2,1);
-"150
-[e ( _Lcd_Set_Cursor (2 , -> -> 2 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 151: Lcd_Write_String(bufA);
+[v _ping_val2 `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 149: int ping_val2 = echo('A',2);
+[e = _ping_val2 ( _echo (2 , -> -> 65 `ui `uc -> 2 `i ]
 "151
-[e ( _Lcd_Write_String (1 &U _bufA ]
-[; ;FinalProject3.c: 152: Lcd_Write_String(" cm, ");
+[v _bufA `uc ~T0 @X0 -> 8 `i a ]
+[; ;FinalProject3.c: 151: char bufA[8];
+[; ;FinalProject3.c: 152: itoa(bufA,ping_val1,10);
 "152
-[e ( _Lcd_Write_String (1 -> :s 3C `*uc ]
-[; ;FinalProject3.c: 153: Lcd_Write_String(bufB);
+[e ( _itoa (3 , , &U _bufA _ping_val1 -> 10 `i ]
 "153
-[e ( _Lcd_Write_String (1 &U _bufB ]
-[; ;FinalProject3.c: 154: Lcd_Write_String(" cm");
+[v _bufB `uc ~T0 @X0 -> 8 `i a ]
+[; ;FinalProject3.c: 153: char bufB[8];
+[; ;FinalProject3.c: 154: itoa(bufB,ping_val2,10);
 "154
-[e ( _Lcd_Write_String (1 -> :s 4C `*uc ]
-[; ;FinalProject3.c: 155: _delay((unsigned long)((500)*(8000000/4000.0)));
-"155
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-[; ;FinalProject3.c: 157: *pinitialize = 1;
-"157
-[e = *U _pinitialize -> 1 `i ]
+[e ( _itoa (3 , , &U _bufB _ping_val2 -> 10 `i ]
+[; ;FinalProject3.c: 159: if(ping_val1 < 100 && ping_val2 < 100)
 "159
-}
-[e :U 402 ]
-"161
-}
-[; ;FinalProject3.c: 159: }
-[; ;FinalProject3.c: 161: }
-[e $U 403  ]
-"164
-[e :U 401 ]
-[; ;FinalProject3.c: 164: else if(ping_val1 > 100 && ping_val2 > 100)
-[e $ ! && > _ping_val1 -> 100 `i > _ping_val2 -> 100 `i 404  ]
-[; ;FinalProject3.c: 165: {
-"165
+[e $ ! && < _ping_val1 -> 100 `i < _ping_val2 -> 100 `i 404  ]
+[; ;FinalProject3.c: 160: {
+"160
 {
-[; ;FinalProject3.c: 166: *pdelay_counter = 0;
+[; ;FinalProject3.c: 163: if (*pinitialize == 0)
+"163
+[e $ ! == *U _pinitialize -> 0 `i 405  ]
+[; ;FinalProject3.c: 164: {
+"164
+{
+[; ;FinalProject3.c: 166: Lcd_Clear();
 "166
-[e = *U _pdelay_counter -> 0 `i ]
-[; ;FinalProject3.c: 167: *pinitialize = 0;
-"167
-[e = *U _pinitialize -> 0 `i ]
-[; ;FinalProject3.c: 168: Lcd_Clear();
-"168
 [e ( _Lcd_Clear ..  ]
-[; ;FinalProject3.c: 169: Lcd_Set_Cursor(1,1);
-"169
+[; ;FinalProject3.c: 167: Lcd_Set_Cursor(1,1);
+"167
 [e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 170: Lcd_Write_String("Out of Range: ");
-"170
-[e ( _Lcd_Write_String (1 -> :s 5C `*uc ]
-[; ;FinalProject3.c: 171: Lcd_Set_Cursor(2,1);
-"171
+[; ;FinalProject3.c: 168: Lcd_Write_String("In range: ");
+"168
+[e ( _Lcd_Write_String (1 -> :s 2C `*uc ]
+[; ;FinalProject3.c: 169: Lcd_Set_Cursor(2,1);
+"169
 [e ( _Lcd_Set_Cursor (2 , -> -> 2 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 172: Lcd_Write_String(bufA);
-"172
+[; ;FinalProject3.c: 170: Lcd_Write_String(bufA);
+"170
 [e ( _Lcd_Write_String (1 &U _bufA ]
-[; ;FinalProject3.c: 173: Lcd_Write_String(" cm, ");
-"173
-[e ( _Lcd_Write_String (1 -> :s 6C `*uc ]
-[; ;FinalProject3.c: 174: Lcd_Write_String(bufB);
-"174
+[; ;FinalProject3.c: 171: Lcd_Write_String(" cm, ");
+"171
+[e ( _Lcd_Write_String (1 -> :s 3C `*uc ]
+[; ;FinalProject3.c: 172: Lcd_Write_String(bufB);
+"172
 [e ( _Lcd_Write_String (1 &U _bufB ]
-[; ;FinalProject3.c: 175: Lcd_Write_String(" cm");
-"175
-[e ( _Lcd_Write_String (1 -> :s 7C `*uc ]
-[; ;FinalProject3.c: 176: _delay((unsigned long)((500)*(8000000/4000.0)));
-"176
+[; ;FinalProject3.c: 173: Lcd_Write_String(" cm");
+"173
+[e ( _Lcd_Write_String (1 -> :s 4C `*uc ]
+[; ;FinalProject3.c: 174: _delay((unsigned long)((500)*(8000000/4000.0)));
+"174
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+[; ;FinalProject3.c: 176: *pinitialize = 1;
+"176
+[e = *U _pinitialize -> 1 `i ]
 "178
 }
-[; ;FinalProject3.c: 178: }
-[e $U 405  ]
-"180
-[e :U 404 ]
-[; ;FinalProject3.c: 180: else
-[; ;FinalProject3.c: 181: {
-"181
-{
-[; ;FinalProject3.c: 182: RA5 = 0;
-"182
-[e = _RA5 -> -> 0 `i `b ]
-[; ;FinalProject3.c: 183: Lcd_Clear();
-"183
-[e ( _Lcd_Clear ..  ]
-[; ;FinalProject3.c: 184: Lcd_Set_Cursor(1,1);
-"184
-[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 185: Lcd_Write_String("Distance: ");
-"185
-[e ( _Lcd_Write_String (1 -> :s 8C `*uc ]
-[; ;FinalProject3.c: 186: Lcd_Set_Cursor(2,1);
-"186
-[e ( _Lcd_Set_Cursor (2 , -> -> 2 `i `uc -> -> 1 `i `uc ]
-[; ;FinalProject3.c: 187: Lcd_Write_String(bufA);
-"187
-[e ( _Lcd_Write_String (1 &U _bufA ]
-[; ;FinalProject3.c: 188: Lcd_Write_String(" cm, ");
-"188
-[e ( _Lcd_Write_String (1 -> :s 9C `*uc ]
-[; ;FinalProject3.c: 189: Lcd_Write_String(bufB);
-"189
-[e ( _Lcd_Write_String (1 &U _bufB ]
-[; ;FinalProject3.c: 190: Lcd_Write_String(" cm");
-"190
-[e ( _Lcd_Write_String (1 -> :s 10C `*uc ]
-[; ;FinalProject3.c: 191: _delay((unsigned long)((500)*(8000000/4000.0)));
-"191
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"192
-}
 [e :U 405 ]
-[e :U 403 ]
-[; ;FinalProject3.c: 192: }
-[; ;FinalProject3.c: 204: toggle = ~toggle;
-"204
-[e = _toggle ~ _toggle ]
-[; ;FinalProject3.c: 206: if(*pdelay_counter > 50)
-"206
-[e $ ! > *U _pdelay_counter -> 50 `i 406  ]
-[; ;FinalProject3.c: 207: {
-"207
+"180
+}
+[; ;FinalProject3.c: 178: }
+[; ;FinalProject3.c: 180: }
+[e $U 406  ]
+"183
+[e :U 404 ]
+[; ;FinalProject3.c: 183: else if(ping_val1 > 100 && ping_val2 > 100)
+[e $ ! && > _ping_val1 -> 100 `i > _ping_val2 -> 100 `i 407  ]
+[; ;FinalProject3.c: 184: {
+"184
 {
-[; ;FinalProject3.c: 208: RA5 ^= 1;
-"208
-[e =^ _RA5 -> -> 1 `i `b ]
-[; ;FinalProject3.c: 209: *pinitialize = 0;
-"209
+[; ;FinalProject3.c: 186: *pinitialize = 0;
+"186
 [e = *U _pinitialize -> 0 `i ]
+[; ;FinalProject3.c: 187: Lcd_Clear();
+"187
+[e ( _Lcd_Clear ..  ]
+[; ;FinalProject3.c: 188: Lcd_Set_Cursor(1,1);
+"188
+[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
+[; ;FinalProject3.c: 189: Lcd_Write_String("Out of Range: ");
+"189
+[e ( _Lcd_Write_String (1 -> :s 5C `*uc ]
+[; ;FinalProject3.c: 190: Lcd_Set_Cursor(2,1);
+"190
+[e ( _Lcd_Set_Cursor (2 , -> -> 2 `i `uc -> -> 1 `i `uc ]
+[; ;FinalProject3.c: 191: Lcd_Write_String(bufA);
+"191
+[e ( _Lcd_Write_String (1 &U _bufA ]
+[; ;FinalProject3.c: 192: Lcd_Write_String(" cm, ");
+"192
+[e ( _Lcd_Write_String (1 -> :s 6C `*uc ]
+[; ;FinalProject3.c: 193: Lcd_Write_String(bufB);
+"193
+[e ( _Lcd_Write_String (1 &U _bufB ]
+[; ;FinalProject3.c: 194: Lcd_Write_String(" cm");
+"194
+[e ( _Lcd_Write_String (1 -> :s 7C `*uc ]
+[; ;FinalProject3.c: 195: _delay((unsigned long)((500)*(8000000/4000.0)));
+"195
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+"197
+}
+[; ;FinalProject3.c: 197: }
+[e $U 408  ]
+"199
+[e :U 407 ]
+[; ;FinalProject3.c: 199: else
+[; ;FinalProject3.c: 200: {
+"200
+{
+[; ;FinalProject3.c: 201: RA5 = 0;
+"201
+[e = _RA5 -> -> 0 `i `b ]
+[; ;FinalProject3.c: 202: Lcd_Clear();
+"202
+[e ( _Lcd_Clear ..  ]
+[; ;FinalProject3.c: 203: Lcd_Set_Cursor(1,1);
+"203
+[e ( _Lcd_Set_Cursor (2 , -> -> 1 `i `uc -> -> 1 `i `uc ]
+[; ;FinalProject3.c: 204: Lcd_Write_String("Distance: ");
+"204
+[e ( _Lcd_Write_String (1 -> :s 8C `*uc ]
+[; ;FinalProject3.c: 205: Lcd_Set_Cursor(2,1);
+"205
+[e ( _Lcd_Set_Cursor (2 , -> -> 2 `i `uc -> -> 1 `i `uc ]
+[; ;FinalProject3.c: 206: Lcd_Write_String(bufA);
+"206
+[e ( _Lcd_Write_String (1 &U _bufA ]
+[; ;FinalProject3.c: 207: Lcd_Write_String(" cm, ");
+"207
+[e ( _Lcd_Write_String (1 -> :s 9C `*uc ]
+[; ;FinalProject3.c: 208: Lcd_Write_String(bufB);
+"208
+[e ( _Lcd_Write_String (1 &U _bufB ]
+[; ;FinalProject3.c: 209: Lcd_Write_String(" cm");
+"209
+[e ( _Lcd_Write_String (1 -> :s 10C `*uc ]
+[; ;FinalProject3.c: 210: _delay((unsigned long)((500)*(8000000/4000.0)));
 "210
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+"211
 }
+[e :U 408 ]
 [e :U 406 ]
-"212
+[; ;FinalProject3.c: 211: }
+[; ;FinalProject3.c: 223: toggle = ~toggle;
+"223
+[e = _toggle ~ _toggle ]
+[; ;FinalProject3.c: 225: if(*pdelay_counter > 50)
+"225
+[e $ ! > *U _pdelay_counter -> 50 `i 409  ]
+[; ;FinalProject3.c: 226: {
+"226
+{
+[; ;FinalProject3.c: 227: RA5 ^= 1;
+"227
+[e =^ _RA5 -> -> 1 `i `b ]
+[; ;FinalProject3.c: 228: *pinitialize = 0;
+"228
+[e = *U _pinitialize -> 0 `i ]
+"229
 }
-[e :U 398 ]
-"125
-[e $U 399  ]
-[e :U 400 ]
-[; ;FinalProject3.c: 210: }
-[; ;FinalProject3.c: 212: }
-[; ;FinalProject3.c: 214: return 0;
-"214
+[e :U 409 ]
+"231
+}
+[e :U 401 ]
+"144
+[e $U 402  ]
+[e :U 403 ]
+[; ;FinalProject3.c: 229: }
+[; ;FinalProject3.c: 231: }
+[; ;FinalProject3.c: 233: return 0;
+"233
 [e ) -> 0 `i ]
-[e $UE 397  ]
-[; ;FinalProject3.c: 215: }
-"215
-[e :UE 397 ]
+[e $UE 400  ]
+[; ;FinalProject3.c: 234: }
+"234
+[e :UE 400 ]
 }
-"217
+"236
 [v _echo `(i ~T0 @X0 1 ef2`uc`i ]
 {
-[; ;FinalProject3.c: 217: int echo(char port, int pin) {
+[; ;FinalProject3.c: 236: int echo(char port, int pin) {
 [e :U _echo ]
 [v _port `uc ~T0 @X0 1 r1 ]
 [v _pin `i ~T0 @X0 1 r2 ]
 [f ]
-"218
-[v _sfrdev `*uc ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 218: char* sfrdev;
-[; ;FinalProject3.c: 219: switch(port){
-"219
-[e $U 409  ]
-{
-[; ;FinalProject3.c: 220: case 'A' :
-"220
-[e :U 410 ]
-[; ;FinalProject3.c: 221: sfrdev = &PORTA;
-"221
-[e = _sfrdev -> &U _PORTA `*uc ]
-[; ;FinalProject3.c: 222: break;
-"222
-[e $U 408  ]
-[; ;FinalProject3.c: 223: case 'B' :
-"223
-[e :U 411 ]
-[; ;FinalProject3.c: 224: sfrdev = &PORTB;
-"224
-[e = _sfrdev -> &U _PORTB `*uc ]
-[; ;FinalProject3.c: 225: break;
-"225
-[e $U 408  ]
-[; ;FinalProject3.c: 226: case 'C' :
-"226
-[e :U 412 ]
-[; ;FinalProject3.c: 227: sfrdev = &PORTC;
-"227
-[e = _sfrdev -> &U _PORTC `*uc ]
-"228
-}
-[; ;FinalProject3.c: 228: }
-[e $U 408  ]
-"219
-[e :U 409 ]
-[e [\ _port , $ -> -> 65 `ui `uc 410
- , $ -> -> 66 `ui `uc 411
- , $ -> -> 67 `ui `uc 412
- 408 ]
-"228
-[e :U 408 ]
-"230
-[v _a `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 230: int a;
-[; ;FinalProject3.c: 232: T1CON = 0x10;
-"232
-[e = _T1CON -> -> 16 `i `uc ]
-[; ;FinalProject3.c: 234: TMR1H = 0;
-"234
-[e = _TMR1H -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 235: TMR1L = 0;
-"235
-[e = _TMR1L -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 237: RA0 = 1;
 "237
-[e = _RA0 -> -> 1 `i `b ]
-[; ;FinalProject3.c: 238: _delay((unsigned long)((10)*(8000000/4000000.0)));
+[v _sfrdev `*uc ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 237: char* sfrdev;
+[; ;FinalProject3.c: 238: switch(port){
 "238
-[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 8000000 `l `d .4000000.0 `ul ]
-[; ;FinalProject3.c: 239: RA0 = 0;
+[e $U 412  ]
+{
+[; ;FinalProject3.c: 239: case 'A' :
 "239
-[e = _RA0 -> -> 0 `i `b ]
-[; ;FinalProject3.c: 241: while( !(*sfrdev & (1<<pin)) );
-"241
-[e $U 413  ]
-[e :U 414 ]
 [e :U 413 ]
-[e $ ! != & -> *U _sfrdev `i << -> 1 `i _pin -> 0 `i 414  ]
-[e :U 415 ]
-[; ;FinalProject3.c: 242: TMR1ON = 1;
+[; ;FinalProject3.c: 240: sfrdev = &PORTA;
+"240
+[e = _sfrdev -> &U _PORTA `*uc ]
+[; ;FinalProject3.c: 241: break;
+"241
+[e $U 411  ]
+[; ;FinalProject3.c: 242: case 'B' :
 "242
-[e = _TMR1ON -> -> 1 `i `b ]
-[; ;FinalProject3.c: 243: while( (*sfrdev & (1<<pin)) );
+[e :U 414 ]
+[; ;FinalProject3.c: 243: sfrdev = &PORTB;
 "243
+[e = _sfrdev -> &U _PORTB `*uc ]
+[; ;FinalProject3.c: 244: break;
+"244
+[e $U 411  ]
+[; ;FinalProject3.c: 245: case 'C' :
+"245
+[e :U 415 ]
+[; ;FinalProject3.c: 246: sfrdev = &PORTC;
+"246
+[e = _sfrdev -> &U _PORTC `*uc ]
+"247
+}
+[; ;FinalProject3.c: 247: }
+[e $U 411  ]
+"238
+[e :U 412 ]
+[e [\ _port , $ -> -> 65 `ui `uc 413
+ , $ -> -> 66 `ui `uc 414
+ , $ -> -> 67 `ui `uc 415
+ 411 ]
+"247
+[e :U 411 ]
+"249
+[v _a `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 249: int a;
+[; ;FinalProject3.c: 251: T1CON = 0x10;
+"251
+[e = _T1CON -> -> 16 `i `uc ]
+[; ;FinalProject3.c: 253: TMR1H = 0;
+"253
+[e = _TMR1H -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 254: TMR1L = 0;
+"254
+[e = _TMR1L -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 256: RA0 = 1;
+"256
+[e = _RA0 -> -> 1 `i `b ]
+[; ;FinalProject3.c: 257: _delay((unsigned long)((10)*(8000000/4000000.0)));
+"257
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 8000000 `l `d .4000000.0 `ul ]
+[; ;FinalProject3.c: 258: RA0 = 0;
+"258
+[e = _RA0 -> -> 0 `i `b ]
+[; ;FinalProject3.c: 260: while( !(*sfrdev & (1<<pin)) );
+"260
 [e $U 416  ]
 [e :U 417 ]
 [e :U 416 ]
-[e $ != & -> *U _sfrdev `i << -> 1 `i _pin -> 0 `i 417  ]
+[e $ ! != & -> *U _sfrdev `i << -> 1 `i _pin -> 0 `i 417  ]
 [e :U 418 ]
-[; ;FinalProject3.c: 244: TMR1ON = 0;
-"244
+[; ;FinalProject3.c: 261: TMR1ON = 1;
+"261
+[e = _TMR1ON -> -> 1 `i `b ]
+[; ;FinalProject3.c: 262: while( (*sfrdev & (1<<pin)) );
+"262
+[e $U 419  ]
+[e :U 420 ]
+[e :U 419 ]
+[e $ != & -> *U _sfrdev `i << -> 1 `i _pin -> 0 `i 420  ]
+[e :U 421 ]
+[; ;FinalProject3.c: 263: TMR1ON = 0;
+"263
 [e = _TMR1ON -> -> 0 `i `b ]
-[; ;FinalProject3.c: 246: a = (TMR1L | (TMR1H<<8));
-"246
+[; ;FinalProject3.c: 265: a = (TMR1L | (TMR1H<<8));
+"265
 [e = _a | -> _TMR1L `i << -> _TMR1H `i -> 8 `i ]
-[; ;FinalProject3.c: 247: a = (int)((float)a/58.82*2);
-"247
+[; ;FinalProject3.c: 266: a = (int)((float)a/58.82*2);
+"266
 [e = _a -> * / -> -> _a `f `d .58.82 -> -> 2 `i `d `i ]
-[; ;FinalProject3.c: 248: a = a + 1;
-"248
+[; ;FinalProject3.c: 267: a = a + 1;
+"267
 [e = _a + _a -> 1 `i ]
-[; ;FinalProject3.c: 250: T1CON = 0x00;
-"250
+[; ;FinalProject3.c: 269: T1CON = 0x00;
+"269
 [e = _T1CON -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 251: return a;
-"251
+[; ;FinalProject3.c: 270: return a;
+"270
 [e ) _a ]
-[e $UE 407  ]
-[; ;FinalProject3.c: 254: }
-"254
-[e :UE 407 ]
+[e $UE 410  ]
+[; ;FinalProject3.c: 273: }
+"273
+[e :UE 410 ]
 }
-"256
+"275
 [v _ping `(i ~T0 @X0 1 ef2`i`i ]
 {
-[; ;FinalProject3.c: 256: int ping(int a,int b) {
+[; ;FinalProject3.c: 275: int ping(int a,int b) {
 [e :U _ping ]
 [v _a `i ~T0 @X0 1 r1 ]
 [v _b `i ~T0 @X0 1 r2 ]
 [f ]
-"257
+"276
 [v _pingVal `i ~T0 @X0 -> 3 `i a ]
-[; ;FinalProject3.c: 257: int pingVal[3];
-[; ;FinalProject3.c: 258: pingVal[0] = echo('A',1);
-"258
+[; ;FinalProject3.c: 276: int pingVal[3];
+[; ;FinalProject3.c: 277: pingVal[0] = echo('A',1);
+"277
 [e = *U + &U _pingVal * -> -> -> 0 `i `ui `ux -> -> # *U &U _pingVal `ui `ux ( _echo (2 , -> -> 65 `ui `uc -> 1 `i ]
-[; ;FinalProject3.c: 259: pingVal[1] = echo('A',2);
-"259
+[; ;FinalProject3.c: 278: pingVal[1] = echo('A',2);
+"278
 [e = *U + &U _pingVal * -> -> -> 1 `i `ui `ux -> -> # *U &U _pingVal `ui `ux ( _echo (2 , -> -> 65 `ui `uc -> 2 `i ]
-[; ;FinalProject3.c: 260: pingVal[2] = echo('A',3);
-"260
+[; ;FinalProject3.c: 279: pingVal[2] = echo('A',3);
+"279
 [e = *U + &U _pingVal * -> -> -> 2 `i `ui `ux -> -> # *U &U _pingVal `ui `ux ( _echo (2 , -> -> 65 `ui `uc -> 3 `i ]
-"261
+"280
 [v _i `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 261: int i;
-[; ;FinalProject3.c: 262: for(i=0;i<3;++i) {
-"262
+[; ;FinalProject3.c: 280: int i;
+[; ;FinalProject3.c: 281: for(i=0;i<3;++i) {
+"281
 {
 [e = _i -> 0 `i ]
-[e $ < _i -> 3 `i 420  ]
-[e $U 421  ]
-[e :U 420 ]
-{
-[; ;FinalProject3.c: 263: if(pingVal[i] < a) {
-"263
-[e $ ! < *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux _a 423  ]
-{
-[; ;FinalProject3.c: 264: pingVal[i] = 0;
-"264
-[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 0 `i ]
-"265
-}
-[; ;FinalProject3.c: 265: } else if(pingVal[i] < b) {
+[e $ < _i -> 3 `i 423  ]
 [e $U 424  ]
 [e :U 423 ]
-[e $ ! < *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux _b 425  ]
 {
-[; ;FinalProject3.c: 266: pingVal[i] = 1;
-"266
-[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 1 `i ]
-"267
-}
-[; ;FinalProject3.c: 267: }else{
-[e $U 426  ]
-[e :U 425 ]
+[; ;FinalProject3.c: 282: if(pingVal[i] < a) {
+"282
+[e $ ! < *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux _a 426  ]
 {
-[; ;FinalProject3.c: 268: pingVal[i] = 2;
-"268
-[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 2 `i ]
-"269
+[; ;FinalProject3.c: 283: pingVal[i] = 0;
+"283
+[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 0 `i ]
+"284
 }
+[; ;FinalProject3.c: 284: } else if(pingVal[i] < b) {
+[e $U 427  ]
 [e :U 426 ]
-[e :U 424 ]
-"270
+[e $ ! < *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux _b 428  ]
+{
+[; ;FinalProject3.c: 285: pingVal[i] = 1;
+"285
+[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 1 `i ]
+"286
 }
-"262
+[; ;FinalProject3.c: 286: }else{
+[e $U 429  ]
+[e :U 428 ]
+{
+[; ;FinalProject3.c: 287: pingVal[i] = 2;
+"287
+[e = *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux -> 2 `i ]
+"288
+}
+[e :U 429 ]
+[e :U 427 ]
+"289
+}
+"281
 [e =+ _i -> 1 `i ]
-[e $ < _i -> 3 `i 420  ]
-[e :U 421 ]
-"270
+[e $ < _i -> 3 `i 423  ]
+[e :U 424 ]
+"289
 }
-[; ;FinalProject3.c: 269: }
-[; ;FinalProject3.c: 270: }
-[; ;FinalProject3.c: 271: for(i=0;i<3;++i)
-"271
+[; ;FinalProject3.c: 288: }
+[; ;FinalProject3.c: 289: }
+[; ;FinalProject3.c: 290: for(i=0;i<3;++i)
+"290
 {
 [e = _i -> 0 `i ]
-[e $ < _i -> 3 `i 427  ]
-[e $U 428  ]
-"272
-[e :U 427 ]
-[; ;FinalProject3.c: 272: if (pingVal[i] == pingVal[(i+1)%3])
-[e $ ! == *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux *U + &U _pingVal * -> -> % + _i -> 1 `i -> 3 `i `ui `ux -> -> # *U &U _pingVal `ui `ux 430  ]
-[; ;FinalProject3.c: 273: return pingVal[i];
-"273
-[e ) *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux ]
-[e $UE 419  ]
-[e :U 430 ]
-"271
-[e =+ _i -> 1 `i ]
-[e $ < _i -> 3 `i 427  ]
-[e :U 428 ]
-"274
-}
-[; ;FinalProject3.c: 274: }
-[e :UE 419 ]
-}
-"276
-[v _setTimeout `(v ~T0 @X0 1 ef1`i ]
-"277
-{
-[; ;FinalProject3.c: 276: void setTimeout(int milliseconds)
-[; ;FinalProject3.c: 277: {
-[e :U _setTimeout ]
-"276
-[v _milliseconds `i ~T0 @X0 1 r1 ]
-"277
-[f ]
-[; ;FinalProject3.c: 281: if (milliseconds <= 0) {
-"281
-[e $ ! <= _milliseconds -> 0 `i 432  ]
-{
-[; ;FinalProject3.c: 284: return;
-"284
-[e $UE 431  ]
-"285
-}
-[e :U 432 ]
-"288
-[v _milliseconds_since `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 285: }
-[; ;FinalProject3.c: 288: int milliseconds_since = (-1L) * 1000 / 1;
-[e = _milliseconds_since -> / * -U -> 1 `l -> -> 1000 `i `l -> -> 1 `i `l `i ]
+[e $ < _i -> 3 `i 430  ]
+[e $U 431  ]
 "291
-[v _end `i ~T0 @X0 1 a ]
-[; ;FinalProject3.c: 291: int end = milliseconds_since + milliseconds;
-[e = _end + _milliseconds_since _milliseconds ]
-[; ;FinalProject3.c: 294: do {
-"294
-[e :U 435 ]
-{
-[; ;FinalProject3.c: 295: milliseconds_since = (-1L) * 1000 / 1;
+[e :U 430 ]
+[; ;FinalProject3.c: 291: if (pingVal[i] == pingVal[(i+1)%3])
+[e $ ! == *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux *U + &U _pingVal * -> -> % + _i -> 1 `i -> 3 `i `ui `ux -> -> # *U &U _pingVal `ui `ux 433  ]
+[; ;FinalProject3.c: 292: return pingVal[i];
+"292
+[e ) *U + &U _pingVal * -> -> _i `ui `ux -> -> # *U &U _pingVal `ui `ux ]
+[e $UE 422  ]
+[e :U 433 ]
+"290
+[e =+ _i -> 1 `i ]
+[e $ < _i -> 3 `i 430  ]
+[e :U 431 ]
+"293
+}
+[; ;FinalProject3.c: 293: }
+[e :UE 422 ]
+}
 "295
-[e = _milliseconds_since -> / * -U -> 1 `l -> -> 1000 `i `l -> -> 1 `i `l `i ]
+[v _setTimeout `(v ~T0 @X0 1 ef1`i ]
 "296
+{
+[; ;FinalProject3.c: 295: void setTimeout(int milliseconds)
+[; ;FinalProject3.c: 296: {
+[e :U _setTimeout ]
+"295
+[v _milliseconds `i ~T0 @X0 1 r1 ]
+"296
+[f ]
+[; ;FinalProject3.c: 300: if (milliseconds <= 0) {
+"300
+[e $ ! <= _milliseconds -> 0 `i 435  ]
+{
+[; ;FinalProject3.c: 303: return;
+"303
+[e $UE 434  ]
+"304
 }
-[; ;FinalProject3.c: 296: } while (milliseconds_since <= end);
-[e $ <= _milliseconds_since _end 435  ]
-[e :U 434 ]
-[; ;FinalProject3.c: 297: }
-"297
-[e :UE 431 ]
+[e :U 435 ]
+"307
+[v _milliseconds_since `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 304: }
+[; ;FinalProject3.c: 307: int milliseconds_since = (-1L) * 1000 / 1;
+[e = _milliseconds_since -> / * -U -> 1 `l -> -> 1000 `i `l -> -> 1 `i `l `i ]
+"310
+[v _end `i ~T0 @X0 1 a ]
+[; ;FinalProject3.c: 310: int end = milliseconds_since + milliseconds;
+[e = _end + _milliseconds_since _milliseconds ]
+[; ;FinalProject3.c: 313: do {
+"313
+[e :U 438 ]
+{
+[; ;FinalProject3.c: 314: milliseconds_since = (-1L) * 1000 / 1;
+"314
+[e = _milliseconds_since -> / * -U -> 1 `l -> -> 1000 `i `l -> -> 1 `i `l `i ]
+"315
 }
-"299
+[; ;FinalProject3.c: 315: } while (milliseconds_since <= end);
+[e $ <= _milliseconds_since _end 438  ]
+[e :U 437 ]
+[; ;FinalProject3.c: 316: }
+"316
+[e :UE 434 ]
+}
+"318
 [v _pinConfig `(v ~T0 @X0 1 ef ]
 {
-[; ;FinalProject3.c: 299: void pinConfig(void){
+[; ;FinalProject3.c: 318: void pinConfig(void){
 [e :U _pinConfig ]
 [f ]
-[; ;FinalProject3.c: 300: TRISA = ~(1<<0)&(1<<1)|(1<<2);
-"300
-[e = _TRISA -> | & ~ << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 1 `i -> 2 `i `uc ]
-[; ;FinalProject3.c: 301: ANSELA = 0;
-"301
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 302: TRISB = (1<<4)|(1<<5)|(1<<6)|(1<<7);
-"302
-[e = _TRISB -> | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
-[; ;FinalProject3.c: 303: ANSELB = 0;
-"303
-[e = _ANSELB -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 304: TRISC = ~(1<<0)&~(1<<3)&~(1<<6)&~(1<<4)|(1<<5);
-"304
-[e = _TRISC -> | & & & ~ << -> 1 `i -> 0 `i ~ << -> 1 `i -> 3 `i ~ << -> 1 `i -> 6 `i ~ << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i `uc ]
-[; ;FinalProject3.c: 306: ANSELC = 0;
-"306
-[e = _ANSELC -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 307: OSCCON = 0x6A;
-"307
-[e = _OSCCON -> -> 106 `i `uc ]
-[; ;FinalProject3.c: 308: TXCKSEL = 1;
-"308
-[e = _TXCKSEL -> -> 1 `i `b ]
-[; ;FinalProject3.c: 309: RXDTSEL = 1;
-"309
-[e = _RXDTSEL -> -> 1 `i `b ]
-[; ;FinalProject3.c: 311: ANSELC=0x20;
-"311
-[e = _ANSELC -> -> 32 `i `uc ]
-[; ;FinalProject3.c: 313: TRISA = ~(1<<0)&(1<<1)|(1<<2);
-"313
-[e = _TRISA -> | & ~ << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 1 `i -> 2 `i `uc ]
-[; ;FinalProject3.c: 314: ANSELA = 0;
-"314
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;FinalProject3.c: 315: TRISB = TRISB & ~( (1<<4)|(1<<5)|(1<<6)|(1<<7) );
-"315
-[e = _TRISB -> & -> _TRISB `i ~ | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
-[; ;FinalProject3.c: 316: ANSELB = ANSELB & ~( (1<<4)|(1<<5)|(1<<6)|(1<<7) );
-"316
-[e = _ANSELB -> & -> _ANSELB `i ~ | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
-[; ;FinalProject3.c: 317: TRISC = TRISC & ~( (1<<0)|(1<<3)|(1<<6) );
-"317
-[e = _TRISC -> & -> _TRISC `i ~ | | << -> 1 `i -> 0 `i << -> 1 `i -> 3 `i << -> 1 `i -> 6 `i `uc ]
-[; ;FinalProject3.c: 318: ANSELC = ANSELC & ~( (1<<0)|(1<<3)|(1<<6) );
-"318
-[e = _ANSELC -> & -> _ANSELC `i ~ | | << -> 1 `i -> 0 `i << -> 1 `i -> 3 `i << -> 1 `i -> 6 `i `uc ]
-[; ;FinalProject3.c: 319: }
+[; ;FinalProject3.c: 319: TRISA = ~(1<<0)&(1<<1)|(1<<2);
 "319
-[e :UE 436 ]
+[e = _TRISA -> | & ~ << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 1 `i -> 2 `i `uc ]
+[; ;FinalProject3.c: 320: ANSELA = 0;
+"320
+[e = _ANSELA -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 321: TRISB = (1<<4)|(1<<5)|(1<<6)|(1<<7);
+"321
+[e = _TRISB -> | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+[; ;FinalProject3.c: 322: ANSELB = 0;
+"322
+[e = _ANSELB -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 323: TRISC = ~(1<<0)&~(1<<3)&~(1<<6)&~(1<<4)|(1<<5);
+"323
+[e = _TRISC -> | & & & ~ << -> 1 `i -> 0 `i ~ << -> 1 `i -> 3 `i ~ << -> 1 `i -> 6 `i ~ << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i `uc ]
+[; ;FinalProject3.c: 325: ANSELC = 0;
+"325
+[e = _ANSELC -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 326: OSCCON = 0x6A;
+"326
+[e = _OSCCON -> -> 106 `i `uc ]
+[; ;FinalProject3.c: 327: TXCKSEL = 1;
+"327
+[e = _TXCKSEL -> -> 1 `i `b ]
+[; ;FinalProject3.c: 328: RXDTSEL = 1;
+"328
+[e = _RXDTSEL -> -> 1 `i `b ]
+[; ;FinalProject3.c: 330: ANSELC=0x20;
+"330
+[e = _ANSELC -> -> 32 `i `uc ]
+[; ;FinalProject3.c: 332: TRISA = ~(1<<0)&(1<<1)|(1<<2);
+"332
+[e = _TRISA -> | & ~ << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 1 `i -> 2 `i `uc ]
+[; ;FinalProject3.c: 333: ANSELA = 0;
+"333
+[e = _ANSELA -> -> 0 `i `uc ]
+[; ;FinalProject3.c: 334: TRISB = TRISB & ~( (1<<4)|(1<<5)|(1<<6)|(1<<7) );
+"334
+[e = _TRISB -> & -> _TRISB `i ~ | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+[; ;FinalProject3.c: 335: ANSELB = ANSELB & ~( (1<<4)|(1<<5)|(1<<6)|(1<<7) );
+"335
+[e = _ANSELB -> & -> _ANSELB `i ~ | | | << -> 1 `i -> 4 `i << -> 1 `i -> 5 `i << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+[; ;FinalProject3.c: 336: TRISC = TRISC & ~( (1<<0)|(1<<3)|(1<<6) );
+"336
+[e = _TRISC -> & -> _TRISC `i ~ | | << -> 1 `i -> 0 `i << -> 1 `i -> 3 `i << -> 1 `i -> 6 `i `uc ]
+[; ;FinalProject3.c: 337: ANSELC = ANSELC & ~( (1<<0)|(1<<3)|(1<<6) );
+"337
+[e = _ANSELC -> & -> _ANSELC `i ~ | | << -> 1 `i -> 0 `i << -> 1 `i -> 3 `i << -> 1 `i -> 6 `i `uc ]
+[; ;FinalProject3.c: 338: }
+"338
+[e :UE 439 ]
 }
 [a 4C 32 99 109 0 ]
 [a 7C 32 99 109 0 ]

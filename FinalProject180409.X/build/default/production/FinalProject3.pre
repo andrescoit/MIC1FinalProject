@@ -1,17 +1,17 @@
 
 # 1 "FinalProject3.c"
 
-# 26 "/Applications/microchip/xc8/v1.45/include/htc.h"
+# 26 "/opt/microchip/xc8/v1.45/include/htc.h"
 extern const char __xc8_OPTIM_SPEED;
 
 extern double __fpnormalize(double);
 
 
-# 13 "/Applications/microchip/xc8/v1.45/include/xc8debug.h"
+# 13 "/opt/microchip/xc8/v1.45/include/xc8debug.h"
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 50 "/Applications/microchip/xc8/v1.45/include/pic16f1829.h"
+# 50 "/opt/microchip/xc8/v1.45/include/pic16f1829.h"
 extern volatile unsigned char INDF0 @ 0x000;
 
 asm("INDF0 equ 00h");
@@ -3908,21 +3908,21 @@ extern volatile __bit nTO @ (((unsigned) &STATUS)*8) + 4;
 extern volatile __bit nWPUEN @ (((unsigned) &OPTION_REG)*8) + 7;
 
 
-# 28 "/Applications/microchip/xc8/v1.45/include/pic.h"
+# 28 "/opt/microchip/xc8/v1.45/include/pic.h"
 #pragma intrinsic(__nop)
 extern void __nop(void);
 
 # 78
 extern unsigned int flash_read(unsigned short addr);
 
-# 114 "/Applications/microchip/xc8/v1.45/include/eeprom_routines.h"
+# 114 "/opt/microchip/xc8/v1.45/include/eeprom_routines.h"
 extern void eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, __eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(__eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 152 "/Applications/microchip/xc8/v1.45/include/pic.h"
+# 152 "/opt/microchip/xc8/v1.45/include/pic.h"
 #pragma intrinsic(_delay)
 extern __nonreentrant void _delay(unsigned long);
 #pragma intrinsic(_delaywdt)
@@ -3936,10 +3936,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 4 "/Applications/microchip/xc8/v1.45/include/__size_t.h"
+# 4 "/opt/microchip/xc8/v1.45/include/__size_t.h"
 typedef unsigned size_t;
 
-# 7 "/Applications/microchip/xc8/v1.45/include/stdarg.h"
+# 7 "/opt/microchip/xc8/v1.45/include/stdarg.h"
 typedef void * va_list[1];
 
 #pragma intrinsic(__va_start)
@@ -3948,17 +3948,17 @@ extern void * __va_start(void);
 #pragma intrinsic(__va_arg)
 extern void * __va_arg(void *, ...);
 
-# 43 "/Applications/microchip/xc8/v1.45/include/stdio.h"
+# 43 "/opt/microchip/xc8/v1.45/include/stdio.h"
 struct __prbuf
 {
 char * ptr;
 void (* func)(char);
 };
 
-# 29 "/Applications/microchip/xc8/v1.45/include/errno.h"
+# 29 "/opt/microchip/xc8/v1.45/include/errno.h"
 extern int errno;
 
-# 12 "/Applications/microchip/xc8/v1.45/include/conio.h"
+# 12 "/opt/microchip/xc8/v1.45/include/conio.h"
 extern void init_uart(void);
 
 extern char getch(void);
@@ -3972,7 +3972,7 @@ extern __bit kbhit(void);
 extern char * cgets(char *);
 extern void cputs(const char *);
 
-# 88 "/Applications/microchip/xc8/v1.45/include/stdio.h"
+# 88 "/opt/microchip/xc8/v1.45/include/stdio.h"
 extern int cprintf(char *, ...);
 #pragma printf_check(cprintf)
 
@@ -3999,7 +3999,7 @@ extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupport
 extern int sprintf(char *, const char *, ...);
 extern int printf(const char *, ...);
 
-# 7 "/Applications/microchip/xc8/v1.45/include/stdlib.h"
+# 7 "/opt/microchip/xc8/v1.45/include/stdlib.h"
 typedef unsigned short wchar_t;
 
 # 15
@@ -4251,8 +4251,34 @@ void setTimeout(int milliseconds);
 int ping(int a, int b);
 
 # 94
+int isr_counter = 0;
+int *pisr_counter = &isr_counter;
+int initialize = 0;
+int *pinitialize = &initialize;
+int delay_counter = 0;
+int *pdelay_counter = &delay_counter;
+
+
+void interrupt ISR() {
+if (INTCON & (1<<2)) {
+INTCON = INTCON & ~(1<<2);
+*pisr_counter+=4;
+if((*pisr_counter % 15625) == 0) ++*pdelay_counter;
+}
+return;
+}
+
 int main(int argc, char** argv)
 {
+OPTION_REG = OPTION_REG
+| (0x07)
+& ~(1<<3)
+& ~(1<<5);
+INTCON = INTCON
+& ~(1<<2)
+| (1<<7)
+| (1<<5);
+
 pinConfig();
 _delay((unsigned long)((30)*(8000000/4000.0)));
 
@@ -4262,13 +4288,6 @@ ANSELC=0x20;
 
 
 RC6 = 0;
-
-
-
-int initialize = 0;
-int *pinitialize = &initialize;
-int delay_counter = 0;
-int *pdelay_counter = &delay_counter;
 
 int toggle = 0;
 
@@ -4299,7 +4318,7 @@ itoa(bufB,ping_val2,10);
 
 if(ping_val1 < 100 && ping_val2 < 100)
 {
-*pdelay_counter++;
+
 
 if (*pinitialize == 0)
 {
@@ -4323,7 +4342,7 @@ _delay((unsigned long)((500)*(8000000/4000.0)));
 
 else if(ping_val1 > 100 && ping_val2 > 100)
 {
-*pdelay_counter = 0;
+
 *pinitialize = 0;
 Lcd_Clear();
 Lcd_Set_Cursor(1,1);
@@ -4351,7 +4370,7 @@ Lcd_Write_String(" cm");
 _delay((unsigned long)((500)*(8000000/4000.0)));
 }
 
-# 204
+# 223
 toggle = ~toggle;
 
 if(*pdelay_counter > 50)

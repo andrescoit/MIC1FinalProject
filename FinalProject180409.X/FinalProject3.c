@@ -91,9 +91,33 @@ int ping(int a, int b);
 #define CLOSE_THRES 10
 #define FAR_THRES 200
 
+int isr_counter = 0; // I had to move these for the interrupt to see them
+int *pisr_counter = &isr_counter;
+int initialize = 0;
+int *pinitialize = &initialize;             // *initializes device reading
+int delay_counter = 0;
+int *pdelay_counter = &delay_counter;          // counts number of 30s iterations
+// input from user for time of delay in seconds
+
+void interrupt ISR() {
+    if (INTCON & (1<<2)) {
+        INTCON = INTCON & ~(1<<2); // clear INTCON2
+        *pisr_counter+=4;
+        if((*pisr_counter % 15625) == 0) ++*pdelay_counter;
+    }
+    return;
+}
+
 int main(int argc, char** argv)
-{
-    
+{   
+    OPTION_REG = OPTION_REG // 15625 = 4 sec
+            |  (0x07) // 256 prescaler
+            & ~(1<<3) // prescaler enable
+            & ~(1<<5); // internal clock Fosc/4 = 1MHz
+    INTCON = INTCON 
+            & ~(1<<2) // clear INTCON2
+            | (1<<7) // set GIE bit on INTCON
+            | (1<<5); // set TMR0IE bit on INTCON
     //LUKES COMMENT
     pinConfig();
     __delay_ms(30);
@@ -104,13 +128,6 @@ int main(int argc, char** argv)
 
     //RA5 ^= 1;
     RW = 0;
-
-
-    // input from user for time of delay in seconds
-    int initialize = 0;
-    int *pinitialize = &initialize;             // *initializes device reading
-    int delay_counter = 0;
-    int *pdelay_counter = &delay_counter;          // counts number of 30s iterations
     
     int toggle = 0;                 // toggles which PING_VAL to store PING value in
     //int ping_val1 = echo(PORT_P1, POS_P1);              // Holds value of PING 0 = error, 1 = car in spot, 2 = no car in spot
@@ -141,7 +158,7 @@ int main(int argc, char** argv)
         //if(ping(CLOSE_THRES,FAR_THRES)==1)    // If there is a car in spot
         if(ping_val1 < 100 && ping_val2 < 100)
         {
-            *pdelay_counter++;
+            //*pdelay_counter++;
 
             if (*pinitialize == 0)
                 {
@@ -165,7 +182,7 @@ int main(int argc, char** argv)
         //else if(ping(CLOSE_THRES,FAR_THRES)==2)       // If there is no car in spot
         else if(ping_val1 > 100 && ping_val2 > 100)
         {
-            *pdelay_counter = 0;
+            //*pdelay_counter = 0;
             *pinitialize = 0;
             Lcd_Clear();
             Lcd_Set_Cursor(1,1);
