@@ -93,6 +93,8 @@ int ping(int a, int b);
 
 int main(int argc, char** argv)
 {
+    
+    //LUKES COMMENT
     pinConfig();
     __delay_ms(30);
 //Set up for Basic Clock, From Lab 10 LCD 
