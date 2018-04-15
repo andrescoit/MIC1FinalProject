@@ -100,18 +100,19 @@ int main(int argc, char** argv)
     OSCCON = 0X6A;
     ANSELC=0x20;
 
-    RA5 ^= 1;
+    //RA5 ^= 1;
     RW = 0;
 
 
     // input from user for time of delay in seconds
-    int delay = 0;                 // 30s device run time
-    int initialize = 0;             // initializes device reading
-    int Delay_counter = 0;          // counts number of 30s iterations
+    int initialize = 0;
+    int *pinitialize = &initialize;             // *initializes device reading
+    int delay_counter = 0;
+    int *pdelay_counter = &delay_counter;          // counts number of 30s iterations
+    
     int toggle = 0;                 // toggles which PING_VAL to store PING value in
     //int ping_val1 = echo(PORT_P1, POS_P1);              // Holds value of PING 0 = error, 1 = car in spot, 2 = no car in spot
     //int ping_val2 = echo(PORT_P2,POS_P2);              // Holds value of PING 0 = error, 1 = car in spot, 2 = no car in spot
-    int LCD_count = 10000;
     
     Lcd_Init();
     Lcd_Clear();
@@ -119,10 +120,12 @@ int main(int argc, char** argv)
     Lcd_Write_String("WELCOME TO UTSA");
     __delay_ms(1000);
     
+    //RA5 = 1;
+    
     while(1)
     {
-        RA5 = 1;
-        RW=0;
+        //RA5 = 1;
+        RW = 0;
         int ping_val1 = echo(PORT_P1,POS_P1);              // Holds value of PING 0 = error, 1 = car in spot, 2 = no car in spot
         int ping_val2 = echo(PORT_P2,POS_P2);              // Holds value of PING 0 = error, 1 = car in spot, 2 = no car in spot
 
@@ -136,7 +139,9 @@ int main(int argc, char** argv)
         //if(ping(CLOSE_THRES,FAR_THRES)==1)    // If there is a car in spot
         if(ping_val1 < 100 && ping_val2 < 100)
         {
-            if (initialize == 0)
+            *pdelay_counter++;
+
+            if (*pinitialize == 0)
                 {
                 
                     Lcd_Clear();
@@ -147,21 +152,19 @@ int main(int argc, char** argv)
                     Lcd_Write_String(" cm, ");
                     Lcd_Write_String(bufB);
                     Lcd_Write_String(" cm");
-                    __delay_ms(100);
+                    __delay_ms(500);
                      
-                    LCD_count = 10000;
-                    initialize = 1;
+                    *pinitialize = 1;
                     
                 }
             
-             Delay_counter++;
         }
         
         //else if(ping(CLOSE_THRES,FAR_THRES)==2)       // If there is no car in spot
         else if(ping_val1 > 100 && ping_val2 > 100)
         {
-            Delay_counter = 0;
-            initialize = 0;
+            *pdelay_counter = 0;
+            *pinitialize = 0;
             Lcd_Clear();
             Lcd_Set_Cursor(1,1);
             Lcd_Write_String("Out of Range: ");
@@ -170,7 +173,7 @@ int main(int argc, char** argv)
             Lcd_Write_String(" cm, ");
             Lcd_Write_String(bufB);
             Lcd_Write_String(" cm");
-            __delay_ms(100);
+            __delay_ms(500);
 
         }
         
@@ -185,37 +188,33 @@ int main(int argc, char** argv)
             Lcd_Write_String(" cm, ");
             Lcd_Write_String(bufB);
             Lcd_Write_String(" cm");
-            __delay_ms(100);
-            continue;
+            __delay_ms(500);
         }
         
-        if(toggle == 0)
-        {
-            ping_val1 = echo(PORT_P1,POS_P1);   
-        }
-        
-        else
-        {    
-            ping_val2 = echo(PORT_P2,POS_P2);
-        }
+//        if(toggle == 0)
+//        {
+//            ping_val1 = echo(PORT_P1,POS_P1);   
+//        }
+//        
+//        else
+//        {    
+//            ping_val2 = echo(PORT_P2,POS_P2);
+//        }
         
         toggle = ~toggle;
         
-        if(Delay_counter >= 60)
+        if(*pdelay_counter > 50)
         {
-            //LCDPutStr("    over time");
-            //LED = on
-            initialize = 0;
+            RA5 ^= 1;
+            *pinitialize = 0;
         }
         
-        delay = 10;
-
     }
 
     return 0;
 }
 
-int echo(char port,int pin) {
+int echo(char port, int pin) {
     char* sfrdev;
     switch(port){
         case 'A' :

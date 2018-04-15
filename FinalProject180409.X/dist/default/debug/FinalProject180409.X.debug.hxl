@@ -1,12 +1,12 @@
 ### HEXMate logfile and output summary ###
 ### Memory Usage ###
  Unused memory ranges:
-  8h - 263h
+  Ah - 263h
   107Eh - 1000Dh
   10012h - 1003Fh
   
- dist/default/production/FinalProject180409.X.production.hex ranges:
-  0h - 7h
+ dist/default/debug/FinalProject180409.X.debug.hex ranges:
+  0h - 9h
   264h - 107Dh
   1000Eh - 10011h
   
@@ -21,8 +21,8 @@
   T = Trailing code
   & = Find & replace opcode
   X = Find & delete opcode
-  1 = dist/default/production/FinalProject180409.X.production.hex
-00000000: 11111111--------------------------------------------------------
+  1 = dist/default/debug/FinalProject180409.X.debug.hex
+00000000: 1111111111------------------------------------------------------
 00000240: ------------------------------------1111111111111111111111111111
 00000280: 1111111111111111111111111111111111111111111111111111111111111111
 000002C0: 1111111111111111111111111111111111111111111111111111111111111111
