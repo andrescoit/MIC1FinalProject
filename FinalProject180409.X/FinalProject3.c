@@ -123,7 +123,7 @@ int main(int argc, char** argv)
     __delay_ms(1000);
     
     //RA5 = 1;
-    
+    // test comment
     while(1)
     {
         //RA5 = 1;
